@@ -6,6 +6,7 @@ specifiers:
   '@bryce-loskie/utils': ^0.1.36
   '@unocss/cli': ^0.45.13
   '@vant/weapp': ^1.10.4
+  dayjs: ^1.11.5
   esno: ^0.16.3
   miniprogram-api-typings: ^3.5.0
   unocss: ^0.45.13
@@ -14,6 +15,7 @@ specifiers:
 dependencies:
   '@bryce-loskie/utils': 0.1.36
   '@vant/weapp': 1.10.4
+  dayjs: 1.11.5
 
 devDependencies:
   '@antfu/ni': 0.18.0
@@ -812,7 +814,6 @@ packages:
 
   /dayjs/1.11.5:
     resolution: {integrity: sha512-CAdX5Q3YW3Gclyo5Vpqkgpj8fSdLQcRuzfX6mC6Phy0nfJ0eGYOeS7m4mt2plDWLAtA4TqTakvbboHvUxfe4iA==}
-    dev: true
 
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}

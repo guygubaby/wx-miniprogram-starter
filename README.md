@@ -28,3 +28,5 @@ pnpm i
 ```bash
 pnpm dev
 ```
+
+5. Build npm using Wechat Devtools

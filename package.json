@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "@bryce-loskie/utils": "^0.1.36",
-    "@vant/weapp": "^1.10.4"
+    "@vant/weapp": "^1.10.4",
+    "dayjs": "^1.11.5"
   },
   "devDependencies": {
     "@antfu/ni": "^0.18.0",
