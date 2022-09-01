@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@antfu/ni': ^0.18.0
   '@bryce-loskie/eslint-config': ^2.0.3
   '@bryce-loskie/utils': ^0.1.36
   '@unocss/cli': ^0.45.13
@@ -15,6 +16,7 @@ dependencies:
   '@vant/weapp': 1.10.4
 
 devDependencies:
+  '@antfu/ni': 0.18.0
   '@bryce-loskie/eslint-config': 2.0.3
   '@unocss/cli': 0.45.13
   esno: 0.16.3
@@ -132,6 +134,11 @@ packages:
     dependencies:
       execa: 5.1.1
       find-up: 5.0.0
+    dev: true
+
+  /@antfu/ni/0.18.0:
+    resolution: {integrity: sha512-D0eek5EV8wOUpZNVAs/mPyeC5TMWFXqchqCyPiR6Lj5FgmSJw0EpFLqAczHX0O5+Jc07N7NBwBip85Gi1MBJnA==}
+    hasBin: true
     dev: true
 
   /@antfu/utils/0.5.2:
