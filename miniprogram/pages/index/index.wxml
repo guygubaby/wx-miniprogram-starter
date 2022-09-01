@@ -1,4 +1,3 @@
-<!--index.wxml-->
 <view class="mt-4">
   <!-- <view class="userinfo">
     <block wx:if="{{canIUseOpenData}}">
@@ -26,7 +25,11 @@
     <text class="user-motto">{{motto}}</text>
   </view>
 
-  <!-- <van-card>tag</van-card> -->
-  <van-button wx:if="{{1}}">foobar</van-button>
+  <van-card title='card'></van-card>
+  <van-button wx:if="{{1}}" size='small'>foobar</van-button>
   <van-circle value='{{30}}' text='text'></van-circle>
+  <van-tag>123</van-tag>
+
+  <van-cell>
+  </van-cell>
 </view>

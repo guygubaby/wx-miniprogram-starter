@@ -1,4 +1,7 @@
 {
   "navigationBarTitleText": "查看启动日志",
-  "usingComponents": {}
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-circle": "@vant/weapp/circle/index"
+  }
 }

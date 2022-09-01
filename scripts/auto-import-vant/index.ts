@@ -1,26 +1,51 @@
 import { resolve } from 'path'
 import { Parser } from 'htmlparser2'
-import { readFileSync, readdirSync, writeFileSync } from 'fs-extra'
+import { readFile, readdir, writeFile } from 'fs-extra'
+import fg from 'fast-glob'
+import { debounce } from 'perfect-debounce'
+import { cyan, dim, green, red, yellow } from 'colorette'
+import { toArray } from '@bryce-loskie/utils'
 
 interface Context {
+  patterns: string[] | string
   avaliableComponents: string[]
   componentMap: Record<string, string[]>
 }
 
 const cwd = process.cwd()
 
+const shorttenPath = (path: string) => {
+  return path.replace(cwd, '')
+}
+
 const ctx: Context = {
+  patterns: 'miniprogram/pages/**/*.wxml',
   avaliableComponents: [],
   componentMap: {},
 }
 
-const getVantComponentsFromRawHtml = (rawHtml: string) => {
+const getVantComponentsFromRawHtml = (rawHtml: string, id: string) => {
   const components: string[] = []
 
   const parser = new Parser({
     onopentag(name, _attribs, isImplied) {
-      if (name.startsWith('van-') && !isImplied && !components.includes(name))
+      if (isImplied)
+        return
+
+      if (!name.startsWith('van-'))
+        return
+
+      const componentName = name.replace(/^van-/, '')
+
+      if (!ctx.avaliableComponents.includes(componentName))
+        return console.log(dim('unknown vant component'), red(name), dim(`found in ${shorttenPath(id)}`))
+
+      if (!components.includes(name))
         components.push(name)
+    },
+
+    onerror(error) {
+      console.error(red('parse failed'), error)
     },
   })
 
@@ -31,57 +56,108 @@ const getVantComponentsFromRawHtml = (rawHtml: string) => {
 }
 
 const getComponentPath = (componentName: string) => {
-  return `@vant/weapp/${componentName}/index`
+  return `@vant/weapp/${componentName.replace(/^van-/, '')}/index`
 }
 
-const getJsonPath = (id: string) => {
-  const fileName = id.split('.')[0]
-  return resolve(cwd, `miniprogram/pages/${fileName}.json`)
-}
-
-const persistComponents = (id: string, components: string[]) => {
-  const jsonPath = getJsonPath(id)
-  const json = readFileSync(jsonPath, 'utf-8')
+const writeJson = async (id: string, components: string[]) => {
+  const jsonPath = id.replace(/\.wxml$/, '.json')
+  const json = await readFile(jsonPath, 'utf-8')
   const jsonObj = JSON.parse(json)
-  const { usingComponents } = jsonObj
+  const { usingComponents = {} } = jsonObj
 
   components.forEach((component) => {
-    usingComponents[`van-${component}`] = getComponentPath(component)
+    usingComponents[component] = getComponentPath(component)
   })
 
   jsonObj.usingComponents = usingComponents
-  const newJson = JSON.stringify(jsonObj, null, 2)
-  writeFileSync(jsonPath, newJson)
+  const newJson = `${JSON.stringify(jsonObj, null, 2)}\n`
+  await writeFile(jsonPath, newJson)
+
+  console.log(cyan('apply usingComponents for'), dim(shorttenPath(id)))
 }
 
-const applyComponents = (ctx: Context) => {
-  const { componentMap, avaliableComponents } = ctx
-
-  Object.entries(componentMap).forEach(([id, components]) => {
-    const temp = components
-      .map(com => com.replace('van-', ''))
-      .filter(component => avaliableComponents.includes(component))
-    temp.length && persistComponents(id, temp)
-  })
-}
-
-const init = () => {
+const init = async () => {
   const vantLibPath = 'miniprogram/miniprogram_npm/@vant/weapp'
   const vantPath = resolve(cwd, vantLibPath)
-  const files = readdirSync(vantPath)
+  const files = await readdir(vantPath)
 
   ctx.avaliableComponents = files
 }
 
-const boostrap = () => {
-  init()
+const isArrayEqual = (a: string[], b: string[]) => {
+  if (a.length !== b.length)
+    return false
 
-  const rawHtml = readFileSync(resolve(cwd, 'miniprogram/pages/index/index.wxml'), 'utf-8')
-  const vantComponents = getVantComponentsFromRawHtml(rawHtml)
-
-  ctx.componentMap['index/index'] = vantComponents
-
-  applyComponents(ctx)
+  return a.every(item => b.includes(item))
 }
 
-boostrap()
+const processWxml = async (file: string) => {
+  const start = Date.now()
+
+  const { componentMap } = ctx
+  const oldComponents = componentMap[file] || []
+
+  const raw = await readFile(file, 'utf-8')
+  const components = getVantComponentsFromRawHtml(raw, file)
+
+  if (isArrayEqual(oldComponents, components))
+    return console.log(yellow('no new vant components detect, skip patch'))
+
+  componentMap[file] = components
+  await writeJson(file, components)
+
+  console.log(
+    green('done in'),
+    yellow(`${Date.now() - start}ms`),
+  )
+}
+
+const preProcess = async () => {
+  const { patterns } = ctx
+  const files = await fg(patterns, { cwd, absolute: true })
+  await Promise.all(files.map(processWxml))
+}
+
+const startWatcher = async () => {
+  const { watch } = await import('chokidar')
+  const { patterns } = ctx
+  const ignored = ['**/{.git,node_modules}/**']
+
+  const watcher = watch(patterns, {
+    ignoreInitial: true,
+    ignorePermissionErrors: true,
+    ignored,
+    cwd,
+  })
+
+  const debouncedProcessWxml = debounce(async (id: string) => {
+    await processWxml(id)
+  }, 120)
+
+  watcher.on('all', async (type, file) => {
+    if (!['add', 'change'].includes(type))
+      return
+
+    console.log(`\ndetect ${green(type)} ${dim(file)}`)
+
+    const absolutePath = resolve(cwd, file)
+    await debouncedProcessWxml(absolutePath)
+  })
+
+  console.info(
+    `\nWatching for changes in ${
+      toArray(patterns)
+        .map(i => cyan(i))
+        .join(', ')}`,
+  )
+}
+
+const boostrap = async () => {
+  console.log(cyan('🚀  Auto Import Vant Components \n'))
+
+  await init()
+  await preProcess()
+  await startWatcher()
+}
+
+boostrap().catch(console.error)
