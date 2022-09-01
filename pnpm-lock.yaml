@@ -1,7 +1,6 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@antfu/ni': ^0.18.0
   '@bryce-loskie/eslint-config': ^2.0.3
   '@bryce-loskie/utils': ^0.1.36
   '@types/fs-extra': ^9.0.13
@@ -28,7 +27,6 @@ dependencies:
   dayjs: 1.11.5
 
 devDependencies:
-  '@antfu/ni': 0.18.0
   '@bryce-loskie/eslint-config': 2.0.3_yqf6kl63nyoq5megxukfnom5rm
   '@types/fs-extra': 9.0.13
   '@types/node': 18.7.14
@@ -162,11 +160,6 @@ packages:
     dependencies:
       execa: 5.1.1
       find-up: 5.0.0
-    dev: true
-
-  /@antfu/ni/0.18.0:
-    resolution: {integrity: sha512-D0eek5EV8wOUpZNVAs/mPyeC5TMWFXqchqCyPiR6Lj5FgmSJw0EpFLqAczHX0O5+Jc07N7NBwBip85Gi1MBJnA==}
-    hasBin: true
     dev: true
 
   /@antfu/utils/0.5.2:

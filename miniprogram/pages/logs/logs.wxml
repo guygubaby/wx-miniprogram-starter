@@ -2,8 +2,5 @@
 <view class="container log-list h-4">
   <block wx:for="{{logs}}" wx:key="timeStamp" wx:for-item="log">
     <text class="log-item">{{index + 1}}. {{log.date}}</text>
-
-    <van-button>foo</van-button>
-    <van-circle value='{{49}}'></van-circle>
   </block>
 </view>

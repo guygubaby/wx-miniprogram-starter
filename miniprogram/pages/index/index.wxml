@@ -1,4 +1,4 @@
-<view class="mt-4">
+<view class="mt-4 px">
   <!-- <view class="userinfo">
     <block wx:if="{{canIUseOpenData}}">
       <view class="userinfo-avatar" bindtap="bindViewTap">
@@ -17,19 +17,21 @@
     </block>
   </view> -->
 
-  <view>
-    foobar
+  <view class="text-xl py">
+    TypeScript Vant UnoCss starter
   </view>
 
-  <view class="h-8 flex items-center bg-purple-500 rounded-full text-white">
+  <view class="h-20 flex items-center justify-center bg-purple-500 rounded-full text-white">
     <text class="user-motto">{{motto}}</text>
   </view>
 
-  <van-card title='card'></van-card>
-  <van-button wx:if="{{1}}" size='small'>foobar</van-button>
-  <van-circle value='{{30}}' text='text'></van-circle>
-  <van-tag>123</van-tag>
+  <van-card title='van card'>
+    card content
+  </van-card>
 
-  <van-cell>
-  </van-cell>
+  <van-button size='small' block class="mb" bindtap="bindViewTap">foobar</van-button>
+
+  <van-circle value='{{30}}' text='text'></van-circle>
+
+  <van-slider value="50" bind:change="onChange" />
 </view>

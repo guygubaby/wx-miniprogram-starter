@@ -8,9 +8,9 @@
     "wx template"
   ],
   "scripts": {
-    "auto-import-vant": "esno ./scripts/auto-import-vant/index.ts",
-    "uno-dev": "unocss './miniprogram/pages/**/*.wxml' -w -o './miniprogram/uno.scss'",
-    "dev": "nr auto-import-vant && nr uno-dev"
+    "dev:auto-import-vant": "esno ./scripts/auto-import-vant/index.ts",
+    "dev:uno-dev": "unocss './miniprogram/pages/**/*.wxml' -w -o './miniprogram/uno.scss'",
+    "dev": "pnpm run dev:auto-import-vant & pnpm run dev:uno-dev"
   },
   "dependencies": {
     "@bryce-loskie/utils": "^0.1.36",
@@ -18,7 +18,6 @@
     "dayjs": "^1.11.5"
   },
   "devDependencies": {
-    "@antfu/ni": "^0.18.0",
     "@bryce-loskie/eslint-config": "^2.0.3",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.7.14",
