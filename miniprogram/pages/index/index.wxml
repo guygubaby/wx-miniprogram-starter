@@ -26,6 +26,7 @@
     <text class="user-motto">{{motto}}</text>
   </view>
 
+  <!-- <van-card>tag</van-card> -->
   <van-button wx:if="{{1}}">foobar</van-button>
   <van-circle value='{{30}}' text='text'></van-circle>
 </view>

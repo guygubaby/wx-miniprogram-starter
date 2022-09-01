@@ -1,5 +1,7 @@
 // index.ts
 
+import { time } from '../../utils/time'
+
 // 获取应用实例
 const app = getApp<IAppOption>()
 
@@ -19,6 +21,10 @@ Page({
     })
   },
   onLoad() {
+    const str = time.format(new Date(), 'YYYY-MM-DD HH:mm')
+    console.log(str)
+    console.log(app.globalData.userInfo)
+
     // @ts-expect-error ignore
     if (wx.getUserProfile) {
       this.setData({
