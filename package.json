@@ -1,0 +1,23 @@
+{
+  "name": "miniprogram-ts-sass-quickstart",
+  "version": "0.1.0",
+  "description": "Starer for wx mini program with typescript, sass and utility css",
+  "author": "guygubaby@gmail.com",
+  "license": "MIT",
+  "keywords": ["wx template"],
+  "scripts": {
+    "dev": "unocss './miniprogram/pages/**/*.wxml' -w -o './miniprogram/uno.scss'"
+  },
+  "dependencies": {
+    "@bryce-loskie/utils": "^0.1.36",
+    "@vant/weapp": "^1.10.4"
+  },
+  "devDependencies": {
+    "@bryce-loskie/eslint-config": "^2.0.3",
+    "@unocss/cli": "^0.45.13",
+    "esno": "^0.16.3",
+    "miniprogram-api-typings": "^3.5.0",
+    "unocss": "^0.45.13",
+    "unocss-preset-weapp": "^0.1.12"
+  }
+}
