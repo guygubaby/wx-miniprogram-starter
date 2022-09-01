@@ -2,7 +2,7 @@
 
 ## Build in features
 
-- typescript
+- TypeScript
 - eslint
 - UnoCss
 - Vant Weapp
@@ -23,10 +23,10 @@ pnpm i
 
 3. [Setup Vant](https://vant-ui.github.io/vant-weapp/#/quickstart)
 
-4. Start dev server
+4. Build npm using Wechat Devtools
+
+5. Start dev server
 
 ```bash
 pnpm dev
 ```
-
-5. Build npm using Wechat Devtools
